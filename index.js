@@ -2,6 +2,8 @@ const page = document.getElementById("page")
 	page.style.width = '100vw'
 	page.style.height = '100vh'
 	page.style.backgroundColor = 'rgba(0, 0, 63, 0.2)'
+
+//--------------------------------------------------------
 	
 const sunD = 50; 
 const sun = document.getElementById("sun-its")
@@ -14,11 +16,54 @@ const sun = document.getElementById("sun-its")
 	sun.style.top = `calc(50% - ${sunD / 2}px)`
 	sun.style.left = `calc(50% - ${sunD / 2}px)`
 	
-const toNext = 80;
+const toNext = 100
+
+//--------------------------------------------------------
+
+const SolarSystem = []
+
+class Celestials {
+	constructor (element, colour, diameter, speed) {
+		this.id = SolarSystem.length + 1
+
+		this.element = element
+		this.colour = colour
+		this.diameter = diameter
+		this.speed = speed
+		this.angleDeg = 0
+
+		this.trajectory = sunD + toNext * (Celestials.id + 1)
+	}
+
+	static create (data) {		
+		const newCelestial = new Celestials(data);
+		SolarSystem.push(newCelestial);
+		return newCelestial;
+	}
+}
+
+
+
+// const jupiterTr = document.getElementById("jupiter-tr")
+// jupiterTr.style = {
+//     width: "100px", 
+//     height: "100px", 
+//     border: "1px solid purple",
+//     borderRadius: "50%",
+//     position: "absolute",
+//     top: "calc(50% - 50px)", 
+//     left: "calc(50% - 50px)" 
+// }
+
+//--------------------------------------------------------
+
+
+const Mercury = Celestials.create(mercury, red, 20, 40)
 	
-const mercuryTrD = sunD + toNext;
 const mercuryTr = document.getElementById("mercury-tr");
-	mercuryTr.style.width = `${mercuryTrD}px`
+	mercuryTr.style.width = `${Mercury.trajectory}px`
+
+	
 	mercuryTr.style.height = `${mercuryTrD}px`
 	mercuryTr.style.border = '1px solid red';
 	mercuryTr.style.borderRadius = '50%';
@@ -38,14 +83,17 @@ const mercury = document.getElementById("mercury-its")
 	mercury.style.top = `calc(50% - ${mercuryD / 2}px - ${mercuryTrD / 2}px)`
 	mercury.style.left = `calc(50% - ${mercuryD / 2}px)`
 
-const Mercury = {
-	element: mercury,
-	diameter: mercuryD,
-	trajectory: mercuryTrD,
-	speed: 30
-}
+// const Mercury = {
+// 	element: mercury,
+// 	diameter: mercuryD,
+// 	trajectory: mercuryTrD,
+// 	angleDeg: 0,
+// 	speed: 80
+// }
+
+//--------------------------------------------------------
 	
-const venusTrD = sunD + toNext + toNext;
+const venusTrD = sunD + toNext * 3;
 const venusTr = document.getElementById("venus-tr")
 	venusTr.style.width = `${venusTrD}px`
 	venusTr.style.height = `${venusTrD}px`
@@ -56,7 +104,7 @@ const venusTr = document.getElementById("venus-tr")
 	venusTr.style.top = `calc(50% - ${venusTrD / 2}px)`
 	venusTr.style.left = `calc(50% - ${venusTrD / 2}px)`
 	
-const venusD = 30;
+const venusD = 25;
 const venus = document.getElementById("venus-its")
 	venus.style.width = `${venusD}px`
 	venus.style.height = `${venusD}px`
@@ -71,10 +119,13 @@ const Venus = {
 	element: venus,
 	diameter: venusD,
 	trajectory: venusTrD,
-	speed: 45
+	angleDeg: 0,
+	speed: 70
 }
 
-const earthTrD = sunD + toNext + toNext + toNext
+//--------------------------------------------------------
+
+const earthTrD = sunD + toNext * 4
 const earthTr = document.getElementById("earth-tr")
 	earthTr.style.width = `${earthTrD}px`
 	earthTr.style.height = `${earthTrD}px`
@@ -100,34 +151,106 @@ const Earth = {
 	element: earth,
 	diameter: earthD,
 	trajectory: earthTrD,
+	angleDeg: 0,
 	speed: 60
 }
 
+//--------------------------------------------------------
 
-const SolarSystem = [
-	Mercury,
-	Venus,
-	Earth
-]
+const marsTrD = sunD + toNext * 5
+const marsTr = document.getElementById("mars-tr")
+	marsTr.style.width = `${marsTrD}px`
+	marsTr.style.height = `${marsTrD}px`
+	marsTr.style.border = '1px solid brown'
+	marsTr.style.borderRadius = '50%'
+	
+	marsTr.style.position = 'absolute'
+	marsTr.style.top = `calc(50% - ${marsTrD / 2}px)`
+	marsTr.style.left = `calc(50% - ${marsTrD / 2}px)`
+	
+const marsD = 35;
+const mars = document.getElementById("mars-its")
+	mars.style.width = `${marsD}px`
+	mars.style.height = `${marsD}px`
+	mars.style.backgroundColor = 'brown'
+	mars.style.borderRadius = '50%'
+	
+	mars.style.position = 'absolute'
+	mars.style.top = `calc(50% - ${marsD / 2}px - ${marsTrD / 2}px)`
+	mars.style.left = `calc(50% - ${marsD / 2}px)`
+	
+const Mars = {
+	element: mars,
+	diameter: marsD,
+	trajectory: marsTrD,
+	angleDeg: 0,
+	speed: 50
+}
 
-const rotation = (planet) => {
-	let angleDeg = 0
-	let timeSec = 1
-	let interval = 5
+//--------------------------------------------------------
+
+const jupiterTrD = sunD + toNext * 6
+const jupiterTr = document.getElementById("jupiter-tr")
+	jupiterTr.style.width = `${jupiterTrD}px`
+	jupiterTr.style.height = `${jupiterTrD}px`
+	jupiterTr.style.border = '1px solid purple'
+	jupiterTr.style.borderRadius = '50%'
+	
+	jupiterTr.style.position = 'absolute'
+	jupiterTr.style.top = `calc(50% - ${jupiterTrD / 2}px)`
+	jupiterTr.style.left = `calc(50% - ${jupiterTrD / 2}px)`
+	
+const jupiterD = 60;
+const jupiter = document.getElementById("jupiter-its")
+	jupiter.style.width = `${jupiterD}px`
+	jupiter.style.height = `${jupiterD}px`
+	jupiter.style.backgroundColor = 'purple'
+	jupiter.style.borderRadius = '50%'
+	
+	jupiter.style.position = 'absolute'
+	jupiter.style.top = `calc(50% - ${jupiterD / 2}px - ${jupiterTrD / 2}px)`
+	jupiter.style.left = `calc(50% - ${jupiterD / 2}px)`
+	
+const Jupiter = {
+	element: jupiter,
+	diameter: jupiterD,
+	trajectory: jupiterTrD,
+	angleDeg: 0,
+	speed: 40
+}
+
+//--------------------------------------------------------
+
+
+// const SolarSystem = [
+// 	Mercury,
+// 	Venus,
+// 	Earth,
+// 	Mars,
+// 	Jupiter
+// ]
+
+const rotation = () => {
+	const interval = 5
 
 	let gapChange = setInterval(() => {	
-			angleDeg += planet.speed * timeSec * interval / 1000
+		let planet
+
+		for (let i = 0; i < SolarSystem.length; i++) {
+			planet = SolarSystem[i]
+
+			let newAngleDeg = planet.angleDeg + planet.speed * interval / 1000
+			planet.angleDeg = newAngleDeg
 			
-			let shiftTop = (planet.trajectory / 2) * Math.cos(angleDeg * (Math.PI / 180))
-			let shiftLeft = (planet.trajectory / 2) * Math.sin(angleDeg * (Math.PI / 180))
+			let shiftTop = (planet.trajectory / 2) * Math.cos(newAngleDeg * (Math.PI / 180))
+			let shiftLeft = (planet.trajectory / 2) * Math.sin(newAngleDeg * (Math.PI / 180))
 			
 			planet.element.style.top = `calc(50% - ${shiftTop}px - ${planet.diameter}px / 2)`
 			planet.element.style.left = `calc(50% - ${shiftLeft}px - ${planet.diameter}px  / 2)`
-		}, timeSec * interval)
+		}
+	}, interval)
 
 	setTimeout(() => clearInterval(gapChange), 90000);
 }
 
-for (let i = 0; i < SolarSystem.length; i++) {
-	rotation(SolarSystem[i])
-}
+rotation()
