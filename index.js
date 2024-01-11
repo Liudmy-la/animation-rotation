@@ -41,7 +41,8 @@ const mercury = document.getElementById("mercury-its")
 const Mercury = {
 	element: mercury,
 	diameter: mercuryD,
-	trajectory: mercuryTrD
+	trajectory: mercuryTrD,
+	speed: 30
 }
 	
 const venusTrD = sunD + toNext + toNext;
@@ -69,7 +70,8 @@ const venus = document.getElementById("venus-its")
 const Venus = {
 	element: venus,
 	diameter: venusD,
-	trajectory: venusTrD
+	trajectory: venusTrD,
+	speed: 45
 }
 
 const earthTrD = sunD + toNext + toNext + toNext
@@ -97,27 +99,35 @@ const earth = document.getElementById("earth-its")
 const Earth = {
 	element: earth,
 	diameter: earthD,
-	trajectory: earthTrD
+	trajectory: earthTrD,
+	speed: 60
 }
 
-const rotation = (gap, planet) => {
-	let angle = 0
+
+const SolarSystem = [
+	Mercury,
+	Venus,
+	Earth
+]
+
+const rotation = (planet) => {
+	let angleDeg = 0
+	let timeSec = 1
+	let interval = 5
 
 	let gapChange = setInterval(() => {	
-			angle += gap
+			angleDeg += planet.speed * timeSec * interval / 1000
 			
-			let shiftTop = (planet.trajectory / 2) * Math.cos(angle * (Math.PI / 180))
-			let shiftLeft = (planet.trajectory / 2) * Math.sin(angle * (Math.PI / 180))
+			let shiftTop = (planet.trajectory / 2) * Math.cos(angleDeg * (Math.PI / 180))
+			let shiftLeft = (planet.trajectory / 2) * Math.sin(angleDeg * (Math.PI / 180))
 			
 			planet.element.style.top = `calc(50% - ${shiftTop}px - ${planet.diameter}px / 2)`
 			planet.element.style.left = `calc(50% - ${shiftLeft}px - ${planet.diameter}px  / 2)`
-		}, 2000)
+		}, timeSec * interval)
 
-	setTimeout(() => clearInterval(gapChange), 24000);
+	setTimeout(() => clearInterval(gapChange), 90000);
 }
 
-rotation(30, Mercury)
-
-rotation(25, Venus)
-
-rotation(20, Earth)
+for (let i = 0; i < SolarSystem.length; i++) {
+	rotation(SolarSystem[i])
+}
