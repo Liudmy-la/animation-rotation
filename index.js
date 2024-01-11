@@ -23,16 +23,17 @@ const toNext = 100
 const SolarSystem = []
 
 class Celestials {
-	constructor (element, colour, diameter, speed) {
-		this.id = SolarSystem.length + 1
+	constructor ({elementId, trajId, colour, diameter, speed}) {
+		this.id = SolarSystem.length + 1 
 
-		this.element = element
+		this.element = document.getElementById(elementId)
+		this.way = document.getElementById(trajId)
 		this.colour = colour
 		this.diameter = diameter
 		this.speed = speed
 		this.angleDeg = 0
 
-		this.trajectory = sunD + toNext * (Celestials.id + 1)
+		this.trajectory = sunD + toNext * (this.id + 1)
 	}
 
 	static create (data) {		
@@ -40,195 +41,80 @@ class Celestials {
 		SolarSystem.push(newCelestial);
 		return newCelestial;
 	}
+
+	setTrajStyle () {
+		this.way.style.width = `${this.trajectory}px`;
+		this.way.style.height = `${this.trajectory}px`;
+		this.way.style.border = `1px solid ${this.colour}`;
+		this.way.style.borderRadius = '50%';
+
+		this.way.style.position = 'absolute';
+		this.way.style.top = `calc(50% - (${this.trajectory}px) / 2)`;
+		this.way.style.left = `calc(50% - (${this.trajectory}px) / 2)`;
 }
 
+	setPlanetStyle () {
+		this.element.style.width = `${this.diameter}px`;
+		this.element.style.height = `${this.diameter}px`;
+		this.element.style.backgroundColor = `${this.colour}`;
+		this.element.style.borderRadius = '50%';
 
-
-// const jupiterTr = document.getElementById("jupiter-tr")
-// jupiterTr.style = {
-//     width: "100px", 
-//     height: "100px", 
-//     border: "1px solid purple",
-//     borderRadius: "50%",
-//     position: "absolute",
-//     top: "calc(50% - 50px)", 
-//     left: "calc(50% - 50px)" 
-// }
-
-//--------------------------------------------------------
-
-
-const Mercury = Celestials.create(mercury, red, 20, 40)
-	
-const mercuryTr = document.getElementById("mercury-tr");
-	mercuryTr.style.width = `${Mercury.trajectory}px`
-
-	
-	mercuryTr.style.height = `${mercuryTrD}px`
-	mercuryTr.style.border = '1px solid red';
-	mercuryTr.style.borderRadius = '50%';
-
-	mercuryTr.style.position = 'absolute';	
-	mercuryTr.style.top = `calc(50% - (${mercuryTrD}px) / 2)`;
-	mercuryTr.style.left = `calc(50% - (${mercuryTrD}px) / 2)`;
-
-const mercuryD = 20;
-const mercury = document.getElementById("mercury-its")
-	mercury.style.width = `${mercuryD}px`
-	mercury.style.height = `${mercuryD}px`
-	mercury.style.backgroundColor = 'red'
-	mercury.style.borderRadius = '50%'
-	
-	mercury.style.position = 'absolute'
-	mercury.style.top = `calc(50% - ${mercuryD / 2}px - ${mercuryTrD / 2}px)`
-	mercury.style.left = `calc(50% - ${mercuryD / 2}px)`
-
-// const Mercury = {
-// 	element: mercury,
-// 	diameter: mercuryD,
-// 	trajectory: mercuryTrD,
-// 	angleDeg: 0,
-// 	speed: 80
-// }
-
-//--------------------------------------------------------
-	
-const venusTrD = sunD + toNext * 3;
-const venusTr = document.getElementById("venus-tr")
-	venusTr.style.width = `${venusTrD}px`
-	venusTr.style.height = `${venusTrD}px`
-	venusTr.style.border = '1px solid yellow'
-	venusTr.style.borderRadius = '50%'
-	
-	venusTr.style.position = 'absolute'
-	venusTr.style.top = `calc(50% - ${venusTrD / 2}px)`
-	venusTr.style.left = `calc(50% - ${venusTrD / 2}px)`
-	
-const venusD = 25;
-const venus = document.getElementById("venus-its")
-	venus.style.width = `${venusD}px`
-	venus.style.height = `${venusD}px`
-	venus.style.backgroundColor = 'yellow'
-	venus.style.borderRadius = '50%'
-	
-	venus.style.position = 'absolute'
-	venus.style.top = `calc(50% - ${venusD / 2}px - ${venusTrD / 2}px)`
-	venus.style.left = `calc(50% - ${venusD / 2}px)`
-	
-const Venus = {
-	element: venus,
-	diameter: venusD,
-	trajectory: venusTrD,
-	angleDeg: 0,
-	speed: 70
+		this.element.style.position = 'absolute';
+		this.element.style.top = `calc(50% - ${this.diameter / 2}px - ${this.trajectory / 2}px)`;
+		this.element.style.left = `calc(50% - ${this.diameter / 2}px)`;
+	}
 }
 
 //--------------------------------------------------------
 
-const earthTrD = sunD + toNext * 4
-const earthTr = document.getElementById("earth-tr")
-	earthTr.style.width = `${earthTrD}px`
-	earthTr.style.height = `${earthTrD}px`
-	earthTr.style.border = '1px solid green'
-	earthTr.style.borderRadius = '50%'
-	
-	earthTr.style.position = 'absolute'
-	earthTr.style.top = `calc(50% - ${earthTrD / 2}px)`
-	earthTr.style.left = `calc(50% - ${earthTrD / 2}px)`
-	
-const earthD = 30;
-const earth = document.getElementById("earth-its")
-	earth.style.width = `${earthD}px`
-	earth.style.height = `${earthD}px`
-	earth.style.backgroundColor = 'green'
-	earth.style.borderRadius = '50%'
-	
-	earth.style.position = 'absolute'
-	earth.style.top = `calc(50% - ${earthD / 2}px - ${earthTrD / 2}px)`
-	earth.style.left = `calc(50% - ${earthD / 2}px)`
-	
-const Earth = {
-	element: earth,
-	diameter: earthD,
-	trajectory: earthTrD,
-	angleDeg: 0,
-	speed: 60
-}
+const Mercury = Celestials.create({elementId: 'mercury-its', trajId: 'mercury-tr', colour: 'brown', diameter: 20, speed: 80})
+	Mercury.setTrajStyle();
+	Mercury.setPlanetStyle();
 
 //--------------------------------------------------------
 
-const marsTrD = sunD + toNext * 5
-const marsTr = document.getElementById("mars-tr")
-	marsTr.style.width = `${marsTrD}px`
-	marsTr.style.height = `${marsTrD}px`
-	marsTr.style.border = '1px solid brown'
-	marsTr.style.borderRadius = '50%'
-	
-	marsTr.style.position = 'absolute'
-	marsTr.style.top = `calc(50% - ${marsTrD / 2}px)`
-	marsTr.style.left = `calc(50% - ${marsTrD / 2}px)`
-	
-const marsD = 35;
-const mars = document.getElementById("mars-its")
-	mars.style.width = `${marsD}px`
-	mars.style.height = `${marsD}px`
-	mars.style.backgroundColor = 'brown'
-	mars.style.borderRadius = '50%'
-	
-	mars.style.position = 'absolute'
-	mars.style.top = `calc(50% - ${marsD / 2}px - ${marsTrD / 2}px)`
-	mars.style.left = `calc(50% - ${marsD / 2}px)`
-	
-const Mars = {
-	element: mars,
-	diameter: marsD,
-	trajectory: marsTrD,
-	angleDeg: 0,
-	speed: 50
-}
+const Venus = Celestials.create({elementId: 'venus-its', trajId: 'venus-tr', colour: 'yellow', diameter: 30, speed: 70})
+	Venus.setTrajStyle();
+	Venus.setPlanetStyle();
 
 //--------------------------------------------------------
 
-const jupiterTrD = sunD + toNext * 6
-const jupiterTr = document.getElementById("jupiter-tr")
-	jupiterTr.style.width = `${jupiterTrD}px`
-	jupiterTr.style.height = `${jupiterTrD}px`
-	jupiterTr.style.border = '1px solid purple'
-	jupiterTr.style.borderRadius = '50%'
-	
-	jupiterTr.style.position = 'absolute'
-	jupiterTr.style.top = `calc(50% - ${jupiterTrD / 2}px)`
-	jupiterTr.style.left = `calc(50% - ${jupiterTrD / 2}px)`
-	
-const jupiterD = 60;
-const jupiter = document.getElementById("jupiter-its")
-	jupiter.style.width = `${jupiterD}px`
-	jupiter.style.height = `${jupiterD}px`
-	jupiter.style.backgroundColor = 'purple'
-	jupiter.style.borderRadius = '50%'
-	
-	jupiter.style.position = 'absolute'
-	jupiter.style.top = `calc(50% - ${jupiterD / 2}px - ${jupiterTrD / 2}px)`
-	jupiter.style.left = `calc(50% - ${jupiterD / 2}px)`
-	
-const Jupiter = {
-	element: jupiter,
-	diameter: jupiterD,
-	trajectory: jupiterTrD,
-	angleDeg: 0,
-	speed: 40
-}
+const Earth = Celestials.create({elementId: 'earth-its', trajId: 'earth-tr', colour: 'green', diameter: 30, speed: 60})
+	Earth.setTrajStyle();
+	Earth.setPlanetStyle();
 
 //--------------------------------------------------------
 
+const Mars = Celestials.create({elementId: 'mars-its', trajId: 'mars-tr', colour: 'red', diameter: 25, speed: 50})
+	Mars.setTrajStyle();
+	Mars.setPlanetStyle();
 
-// const SolarSystem = [
-// 	Mercury,
-// 	Venus,
-// 	Earth,
-// 	Mars,
-// 	Jupiter
-// ]
+//--------------------------------------------------------
+
+const Jupiter = Celestials.create({elementId: 'jupiter-its', trajId: 'jupiter-tr', colour: 'purple', diameter: 60, speed: 40})
+	Jupiter.setTrajStyle();
+	Jupiter.setPlanetStyle();
+
+//--------------------------------------------------------
+
+const Saturn = Celestials.create({elementId: 'saturn-its', trajId: 'saturn-tr', colour: 'brown', diameter: 60, speed: 30})
+	Saturn.setTrajStyle();
+	Saturn.setPlanetStyle();
+
+//--------------------------------------------------------
+
+const Uranus = Celestials.create({elementId: 'uranus-its', trajId: 'uranus-tr', colour: 'blue', diameter: 45, speed: 20})
+	Uranus.setTrajStyle();
+	Uranus.setPlanetStyle();
+
+//--------------------------------------------------------
+
+const Neptune = Celestials.create({elementId: 'neptune-its', trajId: 'neptune-tr', colour: 'grey', diameter: 45, speed: 10})
+	Neptune.setTrajStyle();
+	Neptune.setPlanetStyle();
+
+//--------------------------------------------------------
+
 
 const rotation = () => {
 	const interval = 5
