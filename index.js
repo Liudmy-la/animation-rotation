@@ -5,8 +5,8 @@ const page = document.getElementById("page")
 
 //--------------------------------------------------------
 	
-const sunD = 150; 
-const sun = document.getElementById("sun-its")
+const sunD = 200; 
+const sun = document.getElementById("sun")
 	sun.style.width = `${sunD}px`
 	sun.style.height = `${sunD}px`
 	sun.style.backgroundColor = 'orange'
@@ -16,16 +16,23 @@ const sun = document.getElementById("sun-its")
 	sun.style.top = `calc(50% - ${sunD / 2}px)`
 	sun.style.left = `calc(50% - ${sunD / 2}px)`
 	
-const toNext = 150
+const toNext = 200
 
 const SolarSystem = []
 
 //--------------------------------------------------------
 
 class Celestials {
-	constructor ({elementId, trajId, colour, diameter, speed, satelliteOf}) {
-		this.element = document.getElementById(elementId)
-		this.way = document.getElementById(trajId)
+	constructor ({elementName, colour, diameter, speed, satelliteOf}) {
+		this.obj = document.createElement('div')
+			this.obj.id = elementName.toLowerCase()
+		this.element = document.createElement('div')
+			this.element.id = elementName + '-its'
+		this.way = document.createElement('div')
+			this.way.id = elementName + '-tr'
+		this.obj.append(this.element, this.way)
+			sun.append(this.obj)
+
 		this.colour = colour
 		this.diameter = diameter
 		this.speed = speed
@@ -47,10 +54,10 @@ class Celestials {
 		}
 		else {
 			const parent = SolarSystem.find(
-				(item) => item.element === document.getElementById(satelliteOf.elementId))
+				(item) => item.obj === document.getElementById(satelliteOf.elementName))
 			
 			this.id = parent.satellites.length + 1 
-			this.trajectory = parent.diameter + 20 * (this.id + 1) 
+			this.trajectory = parent.diameter + 30 * (this.id + 1) * 1.5
 
 			//----------------------
 
@@ -85,7 +92,7 @@ class Celestials {
 
 		if (data.satelliteOf) {		
 			const parent = SolarSystem.find(
-				(item) => item.element === document.getElementById(data.satelliteOf.elementId))
+				(item) => item.obj === document.getElementById(data.satelliteOf.elementName))
 			
 			parent.satellites.push(newCelestial);
 		}
@@ -99,35 +106,36 @@ class Celestials {
 //--------------------------------------------------------
 
 const Mercury = Celestials.create({
-		elementId: 'mercury-its', 
-		trajId: 'mercury-tr', 
+		elementName: 'mercury',
 		colour: 'brown', 
 		diameter: 20, 
 		speed: 80
 	})
 
-const Venus = Celestials.create({elementId: 'venus-its', trajId: 'venus-tr', colour: 'yellow', diameter: 30, speed: 70})
-const Earth = Celestials.create({elementId: 'earth-its', trajId: 'earth-tr', colour: 'green', diameter: 30, speed: 60})
-const Mars = Celestials.create({elementId: 'mars-its', trajId: 'mars-tr', colour: 'red', diameter: 25, speed: 50})
-const Jupiter = Celestials.create({elementId: 'jupiter-its', trajId: 'jupiter-tr', colour: 'purple', diameter: 60, speed: 40})
-const Saturn = Celestials.create({elementId: 'saturn-its', trajId: 'saturn-tr', colour: 'brown', diameter: 60, speed: 30})
-const Uranus = Celestials.create({elementId: 'uranus-its', trajId: 'uranus-tr', colour: 'blue', diameter: 45, speed: 20})
-const Neptune = Celestials.create({elementId: 'neptune-its', trajId: 'neptune-tr', colour: 'grey', diameter: 45, speed: 10})
+const Venus = Celestials.create({elementName: 'venus', colour: 'yellow', diameter: 30, speed: 70})
+const Earth = Celestials.create({elementName: 'earth', colour: 'green', diameter: 30, speed: 60})
+const Mars = Celestials.create({elementName: 'mars', colour: 'red', diameter: 25, speed: 50})
+const Jupiter = Celestials.create({elementName: 'jupiter', colour: 'purple', diameter: 60, speed: 40})
+const Saturn = Celestials.create({elementName: 'saturn', colour: 'brown', diameter: 60, speed: 30})
+const Uranus = Celestials.create({elementName: 'uranus', colour: 'blue', diameter: 45, speed: 20})
+const Neptune = Celestials.create({elementName: 'neptune', colour: 'grey', diameter: 45, speed: 10})
 
 	const Moon = Celestials.create({
-			elementId: 'moon-its', 
-			trajId: 'moon-tr', 
+			elementName: 'moon',
 			colour: 'white', 
 			diameter: 10, 
 			speed: 120, 
 
-			satelliteOf: {elementId: 'earth-its'}
+			satelliteOf: {elementName: 'earth'}
 		})
+	
+	const Moon002 = Celestials.create({elementName: 'moon002', colour: 'yellow', diameter: 10,  speed: 150, satelliteOf: {elementName: 'mars'}})
 
-	const Moon001 = Celestials.create({elementId: 'moon001-its', trajId: 'moon001-tr', colour: 'white', diameter: 20,  speed: 120, satelliteOf: {elementId: 'jupiter-its'}})
-	const Moon002 = Celestials.create({elementId: 'moon002-its', trajId: 'moon002-tr', colour: 'pink', diameter: 15, speed: 150, satelliteOf: {elementId: 'jupiter-its'}})
+	const Moon003 = Celestials.create({elementName: 'moon003', colour: 'white', diameter: 20,  speed: 100, satelliteOf: {elementName: 'jupiter'}})
+	const Moon004 = Celestials.create({elementName: 'moon004', colour: 'green', diameter: 15, speed: 150, satelliteOf: {elementName: 'jupiter'}})
+	const Moon005 = Celestials.create({elementName: 'moon005', colour: 'pink', diameter: 25, speed: 200, satelliteOf: {elementName: 'jupiter'}})
 
-	const Moon003 = Celestials.create({elementId: 'moon003-its', trajId: 'moon003-tr', colour: 'white', diameter: 15, speed: 200, satelliteOf: {elementId: 'uranus-its'}})
+	const Moon006 = Celestials.create({elementName: 'moon006', colour: 'white', diameter: 15, speed: 200, satelliteOf: {elementName: 'uranus'}})
 
 //--------------------------------------------------------
 
@@ -175,28 +183,92 @@ const rotation = () => {
 	setTimeout(() => clearInterval(gapChange), 90000);
 }
 
-rotation()
+//--------------------------------------------------------
 
-const ufo = () => {	
-	const fly = document.getElementById('ufo-its')
-	
+const ufo = document.getElementById('ufo-its')
+ufo.style.display = 'none'
+
+const fly = () => {	
+	ufo.style.display = 'inherit'
 	let angle = 0;
-	const perigee = 250;
-	const apogee = 1000;
+	const perigee = 700;
+	const apogee = 1250;
+	const interval = 2
 
 	let move = setInterval(() => {
 		const x = perigee * Math.cos(angle * (Math.PI / 180));
 		const y = apogee * Math.sin(angle * (Math.PI / 180));
 			  
-		fly.style.position = 'absolute';
-		fly.style.top = `calc(40% - ${y}px)`;
-		fly.style.left = `calc(30% - ${x}px)`;
+		ufo.style.position = 'absolute';
+		ufo.style.top = `calc(50% - ${y}px)`;
+		ufo.style.left = `calc(35% - ${x}px)`;
 
-		angle += 2 * Math.random();
+		angle += 1 * Math.random() ** 3;
 
-	}, 5)
+	}, interval)
 
-	setTimeout(() => clearInterval(move), 90000);
+	setTimeout(() => {
+		clearInterval(move)
+		ufo.style.display = 'none'
+	}, 85000);
 }
 
-ufo()
+//--------------------------------------------------------
+
+const fire = document.getElementById('fire')
+fire.style.display = 'none'
+
+const shoot = () => {
+	let planet
+	let planetX
+	let planetY
+	let ufoX
+	let ufoY
+
+	let move = setInterval(() => {
+		
+		for (let i = 0; i < SolarSystem.length; i++) {
+			planet = SolarSystem[i]
+
+			const rectPlanet = planet.element.getBoundingClientRect()	
+				planetX = rectPlanet.left
+				planetY = rectPlanet.top
+				
+			const rectUfo = ufo.getBoundingClientRect()	
+				ufoX = rectUfo.left
+				ufoY = rectUfo.top
+
+			let deltaX = planetX - ufoX
+			let deltaY = planetY - ufoY
+			let distance = Math.sqrt(deltaX ** 2 + deltaY ** 2)
+
+			if (distance < 150){
+				setTimeout(() => {
+					fire.style.position = 'absolute'
+					fire.style.top = `calc(${ufoY}px + ${deltaY}px * 0.9)`
+					fire.style.left = `calc(${ufoX}px + ${deltaX}px * 0.9)`
+					fire.style.display = 'inherit'
+
+					setTimeout(() => {
+						fire.style.display = 'none'
+					}, 800)
+				}, 1)
+			}
+		}
+
+	}, 1)
+
+	setTimeout(() => clearInterval(move), 80000);
+}
+
+setTimeout(() => {
+	rotation(); 
+  
+	setTimeout(() => {
+		fly()
+  
+		setTimeout(() => {
+			shoot();
+		}, 2000);
+	}, 2000);
+}, 10);
