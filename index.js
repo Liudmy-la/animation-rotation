@@ -136,7 +136,7 @@ const rotation = () => {
 
 	let gapChange = setInterval(() => {	
 		let planet
-
+		
 		for (let i = 0; i < SolarSystem.length; i++) {
 			planet = SolarSystem[i]
 
@@ -176,3 +176,27 @@ const rotation = () => {
 }
 
 rotation()
+
+const ufo = () => {	
+	const fly = document.getElementById('ufo-its')
+	
+	let angle = 0;
+	const perigee = 250;
+	const apogee = 1000;
+
+	let move = setInterval(() => {
+		const x = perigee * Math.cos(angle * (Math.PI / 180));
+		const y = apogee * Math.sin(angle * (Math.PI / 180));
+			  
+		fly.style.position = 'absolute';
+		fly.style.top = `calc(40% - ${y}px)`;
+		fly.style.left = `calc(30% - ${x}px)`;
+
+		angle += 2 * Math.random();
+
+	}, 5)
+
+	setTimeout(() => clearInterval(move), 90000);
+}
+
+ufo()
