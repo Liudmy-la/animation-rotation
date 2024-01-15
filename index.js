@@ -1,20 +1,22 @@
-const page = document.getElementById("page")
-	page.style.width = '100vw'
-	page.style.height = '100vh'
-	page.style.backgroundColor = 'rgba(0, 0, 63, 0.3)'
+const $page = $('#page')
+	$page.css({'width': '100vw', 
+			'height': '100vh', 
+			'background-color': 'rgba(0, 0, 63, 0.3)'
+		})
 
 //--------------------------------------------------------
 	
 const sunD = 200; 
-const sun = document.getElementById("sun")
-	sun.style.width = `${sunD}px`
-	sun.style.height = `${sunD}px`
-	sun.style.backgroundColor = 'orange'
-	sun.style.borderRadius = '50%'
-	
-	sun.style.position = 'absolute'
-	sun.style.top = `calc(50% - ${sunD / 2}px)`
-	sun.style.left = `calc(50% - ${sunD / 2}px)`
+const $sun = $('#sun')
+	$sun.css({ 
+			width: `${sunD}px`, 
+			height: `${sunD}px`, 
+			backgroundColor: 'orange',
+			borderRadius: '50%',
+			position: 'absolute',
+			top: `calc(50% - ${sunD / 2}px)`,
+			left: `calc(50% - ${sunD / 2}px)`
+		})
 	
 const toNext = 200
 
@@ -24,14 +26,15 @@ const SolarSystem = []
 
 class Celestials {
 	constructor ({elementName, colour, diameter, speed, satelliteOf}) {
-		this.obj = document.createElement('div')
-			this.obj.id = elementName.toLowerCase()
-		this.element = document.createElement('div')
-			this.element.id = elementName + '-its'
-		this.way = document.createElement('div')
-			this.way.id = elementName + '-tr'
-		this.obj.append(this.element, this.way)
-			sun.append(this.obj)
+		this.$obj = $('<div></div>')
+		this.$obj.attr('id', elementName.toLowerCase())
+		this.$element = $('<div></div>')
+		this.$element.attr('id', elementName.toLowerCase() + '-its')
+		this.$way = $('<div></div>')
+		this.$way.attr('id', elementName.toLowerCase() + '-tr')
+
+		this.$obj.append(this.$element, this.$way)
+			$page.append(this.$obj)
 
 		this.colour = colour
 		this.diameter = diameter
@@ -46,44 +49,56 @@ class Celestials {
 			this.trajectory = sunD + toNext * (this.id + 1) * 1.5
 
 			//----------------------
-				this.way.style.top = `calc(50% - (${this.trajectory}px) / 2)`;
-				this.way.style.left = `calc(50% - (${this.trajectory}px) / 2)`;
+				this.$way.css({ 
+							top: `calc(50% - (${this.trajectory}px) / 2)`,
+							left: `calc(50% - (${this.trajectory}px) / 2)`
+						})
 			
-				this.element.style.top = `calc(50% - ${this.diameter / 2}px - ${this.trajectory / 2}px)`;
-				this.element.style.left = `calc(50% - ${this.diameter / 2}px)`;
+				this.$element.css({ 
+							top: `calc(50% - ${this.diameter / 2}px - ${this.trajectory / 2}px)`,
+							left: `calc(50% - ${this.diameter / 2}px)`
+						})
 		}
 		else {
 			const parent = SolarSystem.find(
-				(item) => item.obj === document.getElementById(satelliteOf.elementName))
-			
+				(item) => item.$obj.is(`#${satelliteOf.elementName.toLowerCase()}`))
+
 			this.id = parent.satellites.length + 1 
 			this.trajectory = parent.diameter + 30 * (this.id + 1) * 1.5
 
 			//----------------------
 
-			this.parentTop = `calc(${parent.element.style.top} + (${parent.diameter}px) / 2)`
-			this.parentLeft = `calc(${parent.element.style.left} + (${parent.diameter}px) / 2)`
+			this.parentTop = `calc(${parent.$element.css('top')} + (${parent.diameter}px) / 2)`
+			this.parentLeft = `calc(${parent.$element.css('left')} + (${parent.diameter}px) / 2)`
 
-				this.way.style.top = `calc(${this.parentTop} - (${this.trajectory}px) / 2)`;
-				this.way.style.left = `calc(${this.parentLeft} - (${this.trajectory}px) / 2)`;
+			this.$way.css({ 
+						top: `calc(${this.parentTop} - (${this.trajectory}px) / 2)`,
+						left: `calc(${this.parentLeft} - (${this.trajectory}px) / 2)`
+					})
 			
-				this.element.style.top = `calc(${this.parentTop} - ${this.diameter / 2}px - ${this.trajectory / 2}px)`;
-				this.element.style.left = `calc(${this.parentLeft} - ${this.diameter / 2}px)`;
+			this.$element.css({ 
+						top: `calc(${this.parentTop} - ${this.diameter / 2}px - ${this.trajectory / 2}px)`,
+						left: `calc(${this.parentLeft} - ${this.diameter / 2}px)`
+					})
 		}
 
 		//----------------------
 
-			this.way.style.width = `${this.trajectory}px`;
-			this.way.style.height = `${this.trajectory}px`;
-			this.way.style.border = `1px solid ${this.colour}`;
-			this.way.style.borderRadius = '50%';
-			this.way.style.position = 'absolute';
+			this.$way.css({ 
+						width: `${this.trajectory}px`,
+						height: `${this.trajectory}px`,
+						border: `1px solid ${this.colour}`,
+						borderRadius: '50%',
+						position: 'absolute'
+					})
 
-			this.element.style.width = `${this.diameter}px`;
-			this.element.style.height = `${this.diameter}px`;
-			this.element.style.backgroundColor = `${this.colour}`;
-			this.element.style.borderRadius = '50%';
-			this.element.style.position = 'absolute';
+			this.$element.css({ 
+						width: `${this.diameter}px`,
+						height: `${this.diameter}px`,
+						backgroundColor: `${this.colour}`,
+						borderRadius: '50%',
+						position: 'absolute'
+					})
 
 	}
 
@@ -92,7 +107,7 @@ class Celestials {
 
 		if (data.satelliteOf) {		
 			const parent = SolarSystem.find(
-				(item) => item.obj === document.getElementById(data.satelliteOf.elementName))
+				(item) => item.$obj.is(`#${data.satelliteOf.elementName.toLowerCase()}`))
 			
 			parent.satellites.push(newCelestial);
 		}
@@ -154,8 +169,10 @@ const rotation = () => {
 			let shiftTop = (planet.trajectory / 2) * Math.cos(newAngleDeg * (Math.PI / 180))
 			let shiftLeft = (planet.trajectory / 2) * Math.sin(newAngleDeg * (Math.PI / 180))
 			
-				planet.element.style.top = `calc(50% - ${shiftTop}px - ${planet.diameter}px / 2)`
-				planet.element.style.left = `calc(50% - ${shiftLeft}px - ${planet.diameter}px  / 2)`
+				planet.$element.css({
+								'top': `calc(50% - ${shiftTop}px - ${planet.diameter}px / 2)`,
+								'left': `calc(50% - ${shiftLeft}px - ${planet.diameter}px  / 2)`
+							})
 
 			if (planet.satellites.length > 0) {
 				let satellite
@@ -169,12 +186,15 @@ const rotation = () => {
 					let shiftSatTop = (satellite.trajectory / 2) * Math.cos(satAngleDeg * (Math.PI / 180))
 					let shiftSatLeft = (satellite.trajectory / 2) * Math.sin(satAngleDeg * (Math.PI / 180))
 					
-						satellite.element.style.top = `calc(${satellite.parentTop} - ${satellite.diameter}px / 2 - ${shiftTop}px - ${shiftSatTop}px + (${planet.trajectory}px / 2))`
-						satellite.element.style.left = `calc(${satellite.parentLeft} - ${satellite.diameter}px / 2 - ${shiftLeft}px - ${shiftSatLeft}px )`
-						
-						satellite.way.style.top = `calc(${satellite.parentTop} - ${satellite.trajectory}px / 2 - ${shiftTop}px + ${planet.trajectory}px / 2)`
-						satellite.way.style.left = `calc(${satellite.parentLeft} - ${satellite.trajectory}px / 2 - ${shiftLeft}px )`
-				
+					satellite.$element.css({
+									'top': `calc(${satellite.parentTop} - ${satellite.diameter}px / 2 - ${shiftTop}px - ${shiftSatTop}px + (${planet.trajectory}px / 2))`,
+									'left':`calc(${satellite.parentLeft} - ${satellite.diameter}px / 2 - ${shiftLeft}px - ${shiftSatLeft}px )`
+								})
+
+					satellite.$way.css({
+									'top': `calc(${satellite.parentTop} - ${satellite.trajectory}px / 2 - ${shiftTop}px + ${planet.trajectory}px / 2)`,
+									'left': `calc(${satellite.parentLeft} - ${satellite.trajectory}px / 2 - ${shiftLeft}px )`
+								})
 				}
 			}
 		}
@@ -185,11 +205,16 @@ const rotation = () => {
 
 //--------------------------------------------------------
 
-const ufo = document.getElementById('ufo-its')
-ufo.style.display = 'none'
+const $ufo = $('#ufo-its')
+$ufo.css({
+		display: 'none'
+	})
 
 const fly = () => {	
-	ufo.style.display = 'inherit'
+	$ufo.css({
+		display: 'inherit'
+	})
+	
 	let angle = 0;
 	const perigee = 700;
 	const apogee = 1250;
@@ -199,24 +224,31 @@ const fly = () => {
 		const x = perigee * Math.cos(angle * (Math.PI / 180));
 		const y = apogee * Math.sin(angle * (Math.PI / 180));
 			  
-		ufo.style.position = 'absolute';
-		ufo.style.top = `calc(50% - ${y}px)`;
-		ufo.style.left = `calc(35% - ${x}px)`;
-
+		$ufo.css({
+			position: 'absolute',
+			top: `calc(50% - ${y}px)`,
+			left: `calc(35% - ${x}px)`,
+			zIndex: '2'
+		})
 		angle += 1 * Math.random() ** 3;
 
 	}, interval)
 
 	setTimeout(() => {
 		clearInterval(move)
-		ufo.style.display = 'none'
+		$ufo.css({
+			display: 'none'
+		})
 	}, 85000);
 }
 
 //--------------------------------------------------------
 
-const fire = document.getElementById('fire')
-fire.style.display = 'none'
+const $fire = $('#fire')
+$fire.css({
+	display: 'none',
+	opacity: '0.8'
+})
 
 const shoot = () => {
 	let planet
@@ -230,27 +262,28 @@ const shoot = () => {
 		for (let i = 0; i < SolarSystem.length; i++) {
 			planet = SolarSystem[i]
 
-			const rectPlanet = planet.element.getBoundingClientRect()	
-				planetX = rectPlanet.left
-				planetY = rectPlanet.top
+			const rectPlanet = planet.$element[0].getBoundingClientRect()	
 				
-			const rectUfo = ufo.getBoundingClientRect()	
-				ufoX = rectUfo.left
-				ufoY = rectUfo.top
+			const rectUfo = $ufo[0].getBoundingClientRect()	
+				ufoX = rectUfo.left + 150
+				ufoY = rectUfo.top + 120
 
-			let deltaX = planetX - ufoX
-			let deltaY = planetY - ufoY
+			let deltaX = rectPlanet.left - ufoX
+			let deltaY = rectPlanet.top - ufoY
 			let distance = Math.sqrt(deltaX ** 2 + deltaY ** 2)
 
-			if (distance < 150){
+			if (distance < 200){
 				setTimeout(() => {
-					fire.style.position = 'absolute'
-					fire.style.top = `calc(${ufoY}px + ${deltaY}px * 0.9)`
-					fire.style.left = `calc(${ufoX}px + ${deltaX}px * 0.9)`
-					fire.style.display = 'inherit'
+					$fire.css({
+						position: 'absolute',
+						top: `calc(${ufoY}px + ${deltaY * 0.5}px)`,
+						left: `calc(${ufoX}px + ${deltaX * 0.5}px )`,
+						display: 'inherit',
+						zIndex: '3'
+					})
 
 					setTimeout(() => {
-						fire.style.display = 'none'
+						$fire.css({display: 'none'})
 					}, 800)
 				}, 1)
 			}
