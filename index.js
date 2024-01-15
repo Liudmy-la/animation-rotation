@@ -246,8 +246,7 @@ const fly = () => {
 
 const $fire = $('#fire')
 $fire.css({
-	display: 'none',
-	opacity: '0.8'
+	display: 'none'
 })
 
 const shoot = () => {
@@ -273,8 +272,7 @@ const shoot = () => {
 			let distance = Math.sqrt(deltaX ** 2 + deltaY ** 2)
 
 			if (distance < 200){
-				setTimeout(() => {
-					$fire.css({
+				$fire.css({
 						position: 'absolute',
 						top: `calc(${ufoY}px + ${deltaY * 0.5}px)`,
 						left: `calc(${ufoX}px + ${deltaX * 0.5}px )`,
@@ -282,10 +280,7 @@ const shoot = () => {
 						zIndex: '3'
 					})
 
-					setTimeout(() => {
-						$fire.css({display: 'none'})
-					}, 800)
-				}, 1)
+				$fire.fadeOut(1000)
 			}
 		}
 
